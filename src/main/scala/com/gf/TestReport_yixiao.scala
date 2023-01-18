@@ -19,7 +19,7 @@ import utils.DateTimeUtil
  * 2.程序读取上面的sql文件,将语句、执行结果写到excel（测试报告.xlsx）
  */
 
-object TestReport_my_ceshi {
+object TestReport_yixiao {
 
   var con: Connection = null
   var st: Statement = null
@@ -104,6 +104,35 @@ object TestReport_my_ceshi {
 
     var nCell: XSSFCell = null
     var nRow: XSSFRow = null
+
+    // 创建标题
+    nRow = sheet.createRow(0)
+    nCell = nRow.createCell(0)
+    nCell.setCellValue("序号NO.1")
+    nCell = nRow.createCell(1)
+    nCell.setCellValue("表名")
+    nCell = nRow.createCell(2)
+    nCell.setCellValue("数据范围")
+    nCell = nRow.createCell(3)
+    nCell.setCellValue("字段")
+    nCell = nRow.createCell(4)
+    nCell.setCellValue("结果记录数")
+    nCell = nRow.createCell(5)
+    nCell.setCellValue("参考数据")
+    nCell = nRow.createCell(6)
+    nCell.setCellValue("分类编号")
+    nCell = nRow.createCell(7)
+    nCell.setCellValue("测试用例描述")
+    nCell = nRow.createCell(8)
+    nCell.setCellValue("测试SQL")
+    nCell = nRow.createCell(9)
+    nCell.setCellValue("测试结果")
+    nCell = nRow.createCell(10)
+    nCell.setCellValue("结论")
+    nCell = nRow.createCell(11)
+    nCell.setCellValue("时间")
+    nCell = nRow.createCell(12)
+    nCell.setCellValue("执行人")
 
     nRow = sheet.createRow(vRow)
 
