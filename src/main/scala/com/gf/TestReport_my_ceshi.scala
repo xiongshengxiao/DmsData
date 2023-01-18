@@ -19,7 +19,7 @@ import utils.DateTimeUtil
  * 2.程序读取上面的sql文件,将语句、执行结果写到excel（测试报告.xlsx）
  */
 
-object TestReport_my {
+object TestReport_my_ceshi {
 
   var con: Connection = null
   var st: Statement = null
@@ -166,152 +166,72 @@ object TestReport_my {
       nCell = nRow.createCell(5)
       nCell.setCellValue(cntL(1))
     }
+
     if (test_report == "1") {
-      if (test_name == "TC-01") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("count(1)")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("对比ODS数据条数与DL数据条数是否一致")
-
-      } else if (test_name == "TC-03") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有日期/时间格式字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断ODS表时间类型字段值不符合时间格式的记录数是否为0")
-
-      } else if (test_name == "TC-04") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有数值类型字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断ODS表数值类型字段值为NULL的记录数是否等于0")
-
-      } else if (test_name == "TC-05") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有字段串类型字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断ODS表字符串类型字段值为NULL的记录数是否等于0")
-
-      } else if (test_name == "TC-06") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有字符串类型字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断ODS表字符串类型字段值首尾有空格的记录数是否等于0")
-      } else if (test_name == "TC-07") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("业务主键字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断ODS表总记录数据与DMS表主键去重记录数差异是否等于0")
-      } else if (test_name == "TC-08") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("load_time,insert_time")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断ODS表insert_time与load_time字段值不符合时间格式的记录数是否等于0")
+      val test_case_description = Map[String, String](("TC-01", "对比ODS数据条数与DL数据条数是否一致"), ("TC-03", "判断ODS表时间类型字段值不符合时间格式的记录数是否为0"),
+        ("TC-04", "判断ODS表数值类型字段值为NULL的记录数是否等于0"), ("TC-05", "判断ODS表字符串类型字段值为NULL的记录数是否等于0"), ("TC-06", "判断ODS表字符串类型字段值首尾有空格的记录数是否等于0"),
+        ("TC-07", "判断ODS表总记录数据与DMS表主键去重记录数差异是否等于0"), ("TC-08", "判断ODS表insert_time与load_time字段值不符合时间格式的记录数是否等于0"))
+      for ((k, v) <- test_case_description) {
+        if (test_name == k) {
+          nCell = nRow.createCell(7)
+          nCell.setCellValue(test_case_description.get(k).get)
+        }
       }
+
     } else if (test_report == "2") {
-      if (test_name == "TC-01") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("count(1)")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("对比旧DL数据条数与DMS数据条数是否一致")
-
-      } else if (test_name == "TC-02") {
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("对比旧DL字段【】枚举值为''的数据条数与ODS字段【】枚举值为''的数据条数是否一致")
-
-      } else if (test_name == "TC-03") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有日期/时间格式字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断旧DL表时间类型字段值不符合时间格式的记录数是否为0")
-
-      } else if (test_name == "TC-04") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有数值类型字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断旧DL表数值类型字段值为NULL的记录数是否等于0")
-
-      } else if (test_name == "TC-05") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有字段串类型字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断旧DL表字符串类型字段值为NULL的记录数是否等于0")
-
-      } else if (test_name == "TC-06") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断旧DL表字符串类型字段值首尾有空格的记录数是否等于0")
-
-      } else if (test_name == "TC-07") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("主键字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断旧DL表总记录数据与DMS表主键去重记录数差异是否等于0")
-
-      } else if (test_name == "TC-08") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("外键字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断DMS关联表数据不在主表条数是否等于0")
-
-      } else if (test_name == "TC-09") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("load_time")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断旧DL表load_time字段值不符合时间格式的记录数是否等于0")
+      val test_case_description = Map[String, String](("TC-01", "对比旧DL数据条数与DMS数据条数是否一致"), ("TC-03", "判断旧DL表时间类型字段值不符合时间格式的记录数是否为0"),
+        ("TC-04", "判断旧DL表数值类型字段值为NULL的记录数是否等于0"), ("TC-05", "判断旧DL表字符串类型字段值为NULL的记录数是否等于0"),
+        ("TC-06", "判断旧DL表字符串类型字段值首尾有空格的记录数是否等于0"), ("TC-07", "判断旧DL表总记录数据与DMS表主键去重记录数差异是否等于0"),
+        ("TC-08", "判断DMS关联表数据不在主表条数是否等于0"), ("TC-09", "判断旧DL表load_time字段值不符合时间格式的记录数是否等于0"))
+      for ((k, v) <- test_case_description) {
+        if (test_name == k) {
+          nCell = nRow.createCell(7)
+          nCell.setCellValue(test_case_description.get(k).get)
+        }
       }
+
     } else if (test_report == "3") {
-      if (test_name == "TC-01") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("count(1)")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("对比DMS、旧DL数据条数之和与DWD数据条数是否一致")
+      val test_case_description = Map[String, String](("TC-01", "对比DMS、旧DL数据条数之和与DWD数据条数是否一致"), ("TC-02", "对比DWD字段【】枚举值为''的数据条数与ODS字段【】枚举值为''的数据条数是否一致"),
+        ("TC-03", "判断DWD表时间类型字段值不符合时间格式的记录数是否为0"), ("TC-04", "判断DWD表数值类型字段值为NULL的记录数是否等于0"), ("TC-05", "判断DWD表字符串类型字段值为NULL的记录数是否等于0"),
+        ("TC-06", "判断DWD表字符串类型字段值首尾有空格的记录数是否等于0"), ("TC-07", "判断DWD表总记录数据与DWD表主键去重记录数差异是否等于0"),
+        ("TC-08", "判断DMS/旧表关联表数据不在主表条数是否等于0"), ("TC-09", "判断DWD表insert_time字段值不符合时间格式的记录数是否等于0"))
+      for ((k, v) <- test_case_description) {
+        if (test_name == k) {
+          nCell = nRow.createCell(7)
+          nCell.setCellValue(test_case_description.get(k).get)
+        }
+      }
 
-      } else if (test_name == "TC-02") {
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("对比DWD字段【】枚举值为''的数据条数与ODS字段【】枚举值为''的数据条数是否一致")
+    }
 
-      } else if (test_name == "TC-03") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有日期/时间格式字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断DWD表时间类型字段值不符合时间格式的记录数是否为0")
+    if (test_report == "1") {
+      val field_date = Map[String, String](("TC-01", "count(1)"), ("TC-03", "所有日期/时间格式字段"), ("TC-04", "所有数值类型字段"),
+        ("TC-05", "所有字段串类型字段"), ("TC-06", "所有字符串类型字段"), ("TC-07", "业务主键字段"), ("TC-08", "load_time,insert_time"))
+      for ((k, v) <- field_date) {
+        if (test_name == k) {
+          nCell = nRow.createCell(3)
+          nCell.setCellValue(field_date.get(k).get)
+        }
+      }
 
-      } else if (test_name == "TC-04") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有数值类型字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断DWD表数值类型字段值为NULL的记录数是否等于0")
+    } else if (test_report == "2") {
+      val field_date = Map[String, String](("TC-01", "count(1)"), ("TC-03", "所有日期/时间格式字段"), ("TC-04", "所有数值类型字段"), ("TC-05", "所有字段串类型字段"),
+        ("TC-06", "所有字段"), ("TC-07", "主键字段"), ("TC-08", "外键字段"), ("TC-09", "load_time"))
+      for ((k, v) <- field_date) {
+        if (test_name == k) {
+          nCell = nRow.createCell(3)
+          nCell.setCellValue(field_date.get(k).get)
+        }
+      }
 
-      } else if (test_name == "TC-05") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有字段串类型字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断DWD表字符串类型字段值为NULL的记录数是否等于0")
-
-      } else if (test_name == "TC-06") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("所有字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断DWD表字符串类型字段值首尾有空格的记录数是否等于0")
-
-      } else if (test_name == "TC-07") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("主键字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断DWD表总记录数据与DWD表主键去重记录数差异是否等于0")
-
-      } else if (test_name == "TC-08") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("外键字段")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断DMS/旧表关联表数据不在主表条数是否等于0")
-
-      } else if (test_name == "TC-09") {
-        nCell = nRow.createCell(3)
-        nCell.setCellValue("load_time")
-        nCell = nRow.createCell(7)
-        nCell.setCellValue("判断DWD表insert_time字段值不符合时间格式的记录数是否等于0")
+    } else if (test_report == "3") {
+      val field_date = Map[String, String](("TC-01", "count(1)"), ("TC-03", "所有日期/时间格式字段"), ("TC-04", "所有数值类型字段"), ("TC-05", "所有字段串类型字段"),
+        ("TC-06", "所有字段"), ("TC-07", "主键字段"), ("TC-08", "外键字段"), ("TC-09", "load_time"))
+      for ((k, v) <- field_date) {
+        if (test_name == k) {
+          nCell = nRow.createCell(3)
+          nCell.setCellValue(field_date.get(k).get)
+        }
       }
     }
 
