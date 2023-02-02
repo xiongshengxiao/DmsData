@@ -62,13 +62,14 @@ object TestImpalaODS {
         .replaceAll("_new$","")
 
       val odslist_uc_key = Map("ods.ods_dms_uc_uc_cust_car_sale_follow"-> "negotiation_id","ods.ods_dms_uc_uc_cust_car_buy_follow"-> "negotiation_id")
-      val RDDdata = odslist_uc_key.get(table_name).get
-      println(RDDdata)
+      val data = odslist_uc_key.get(table_name).get
+//    打印获取到业务主键的值
+//    println(table_name+"业务主键的值:" + data)
 
       val vsql0 =
         s"""with
            |t1 as (select '${table_name}' as table_name,count(1) ods_cnt,count(if(update_time>='${update_time}',1,null)) ods_cnt_update from ${table_name}),
-           |t2 as (select '${ld_tn}' as ld_tn,count(DISTINCT ${RDDdata}) dl_cnt,count(if(update_time>='${update_time}',1,null)) dl_cnt_update from ${ld_tn})
+           |t2 as (select '${ld_tn}' as ld_tn,count(DISTINCT ${data}) dl_cnt,count(if(update_time>='${update_time}',1,null)) dl_cnt_update from ${ld_tn})
            |select t1.table_name,t2.ld_tn,t1.ods_cnt,t2.dl_cnt,t1.ods_cnt_update,t2.dl_cnt_update from t1 left join t2 on 1=1""".stripMargin
       toExecl2(st.executeQuery(vsql0), vrow, sheet)
       vrow += 1
