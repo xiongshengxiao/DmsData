@@ -56,10 +56,15 @@ object tablename {
     "ods.ods_dms_cs_vhcl_common_model_grade_config", "ods.ods_dms_cs_salesed_vehicle_ledger", "ods.ods_dms_cs_maintain_uc_repair_entrust",
     "ods.ods_dms_cs_meta_second_level_source", "ods.ods_dms_cs_meta_first_level_source", "ods.ods_dms_cs_base_region_new", "ods.ods_dms_cs_base_dealer_basic_info")
 
+  val odslist_uc_ceshi : List[String] = List("ods.ods_dms_uc_uc_cust_car_sale_follow","ods.ods_dms_uc_uc_cust_car_buy_follow")
   val odl_list_partition: List[String] = List()
 
   val odl_list_no_bitchid_updatetime: List[String] = List("dl.tg_gms_vhc_order_tb_exp", "dl.tg_icrop_tb_m_grade")
 
   val odl_list_for_updatetime: List[String] = List("dl.tg_icrop_tb_t_chip_his_new")
 
+}
+
+object primary_key{
+  val odslist_uc_key = Map("ods.ods_dms_uc_uc_cust_car_sale_follow"-> "negotiation_id","ods.ods_dms_uc_uc_cust_car_buy_follow"-> "negotiation_id")
 }

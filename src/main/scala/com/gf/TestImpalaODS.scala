@@ -4,7 +4,8 @@ import com.typesafe.config.ConfigFactory
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.security.UserGroupInformation
 import org.apache.poi.xssf.usermodel.{XSSFCell, XSSFRow, XSSFSheet, XSSFWorkbook}
-import utils.tablename.{odslist_sd, odslist_sd_60, odslist_uc}
+import utils.tablename.{odslist_sd, odslist_sd_60, odslist_uc,odslist_uc_ceshi}
+import utils.primary_key.odslist_uc_key
 
 import java.io.{File, FileOutputStream}
 import java.security.PrivilegedAction
@@ -33,21 +34,21 @@ object TestImpalaODS {
     nCell.setCellValue("序号")
     nCell = nRow.createCell(1)
     nCell.setCellValue("ods表名")
-    nCell = nRow.createCell(4)
-    nCell.setCellValue("dl表名")
     nCell = nRow.createCell(2)
-    nCell.setCellValue(s"ods总条数")
-    nCell = nRow.createCell(5)
-    nCell.setCellValue("dl总条数")
+    nCell.setCellValue("dl表名")
     nCell = nRow.createCell(3)
+    nCell.setCellValue(s"ods总条数")
+    nCell = nRow.createCell(4)
+    nCell.setCellValue("dl总条数")
+    nCell = nRow.createCell(5)
     nCell.setCellValue(s"ods新增条数update_time>=${update_time}")
     nCell = nRow.createCell(6)
     nCell.setCellValue(s"dl新增条数update_time>=${update_time}")
 
     var vrow: Int = 1;
 
-    for (table_name <- odslist_uc) {
-      //      println(table_name)
+    for (table_name <- odslist_uc_ceshi) {
+//            println(table_name)
       val ld_tn = table_name.replace("ods.ods_", "dl.tg_")
         .replace("dms_cs_", "dms_cs_t_")
         .replace("_dms_apad_", "_dms_apad_t_")
@@ -60,10 +61,14 @@ object TestImpalaODS {
         .replace("_dms_wty_", "_dms_wty_t_")
         .replaceAll("_new$","")
 
+      val odslist_uc_key = Map("ods.ods_dms_uc_uc_cust_car_sale_follow"-> "negotiation_id","ods.ods_dms_uc_uc_cust_car_buy_follow"-> "negotiation_id")
+      val RDDdata = odslist_uc_key.get(table_name).get
+      println(RDDdata)
+
       val vsql0 =
         s"""with
            |t1 as (select '${table_name}' as table_name,count(1) ods_cnt,count(if(update_time>='${update_time}',1,null)) ods_cnt_update from ${table_name}),
-           |t2 as (select '${ld_tn}' as ld_tn,count(1) dl_cnt,count(if(update_time>='${update_time}',1,null)) dl_cnt_update from ${ld_tn})
+           |t2 as (select '${ld_tn}' as ld_tn,count(DISTINCT ${RDDdata}) dl_cnt,count(if(update_time>='${update_time}',1,null)) dl_cnt_update from ${ld_tn})
            |select t1.table_name,t2.ld_tn,t1.ods_cnt,t2.dl_cnt,t1.ods_cnt_update,t2.dl_cnt_update from t1 left join t2 on 1=1""".stripMargin
       toExecl2(st.executeQuery(vsql0), vrow, sheet)
       vrow += 1
