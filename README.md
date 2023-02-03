@@ -1,3 +1,3 @@
-# DmsData
+# DmsData-该项目需要配合auto_sql项目使用(auto_sql可以自动化生成测试项SQL，DmsData项目可以生成测试报告模板)
 
 跟进生成的(测试报告)测试项SQL，使用Scala语言连接impala进行自动化创建测试报告
